@@ -84,21 +84,21 @@ function App() {
       {/**output display for cocktail data*/}
       <Box>
         {cocktailData === undefined ? (
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} sx={{backgroundColor: "#D4AE87"}}>
             <Table sx={{ minWidth: 650, maxWidth: "90%", marginLeft: "auto", marginRight: "auto" }} aria-label="cocktail-recipes">
               <TableHead>
-                <TableRow>
+                <TableRow sx={{backgroundColor: "#FAEDCD"}}>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
             </Table>
           </TableContainer>
         ) : (
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} sx={{backgroundColor: "#D4AE87"}}>
             {cocktailData === null || cocktailData.drinks === null ? (
               <Table sx={{ minWidth: 650, maxWidth: "90%", marginLeft: "auto", marginRight: "auto" }} aria-label="cocktail-recipes">
                 <TableHead>
-                  <TableRow>
+                  <TableRow sx={{backgroundColor: "#FAEDCD"}}>
                     <TableCell align="center" sx={{fontWeight: "bold"}}>Cocktail not found</TableCell>
                   </TableRow>
                 </TableHead>
@@ -107,37 +107,37 @@ function App() {
               <Table sx={{ minWidth: 650, maxWidth: "90%", marginLeft: "auto", marginRight: "auto" }}>
                 {cocktailData.drinks.map((drink: Cocktail) => (
                   <TableBody key={drink.idDrink}>
-                    <TableRow>
+                    <TableRow sx={{backgroundColor: "#FAEDCD"}}>
                       <TableCell colSpan={3} align="center" sx={{fontWeight: "bold"}}>{drink.strDrink}</TableCell>
                     </TableRow>
-                    <TableRow>
+                    <TableRow sx={{backgroundColor: "#FEFAE0"}}>
                       <TableCell rowSpan={19} sx={{width: 400}}><img src={drink.strDrinkThumb} style={{maxWidth: "100%", height: "auto"}}/></TableCell>
                       <TableCell></TableCell>
                       <TableCell><strong>Type: </strong>{drink.strAlcoholic}</TableCell>
                     </TableRow>
-                    <TableRow>
+                    <TableRow sx={{backgroundColor: "#FEFAE0"}}>
                       <TableCell></TableCell>
                       <TableCell><strong>Preferred glass: </strong>{drink.strGlass}</TableCell>
                     </TableRow>
-                    <TableRow>
+                    <TableRow sx={{backgroundColor: "#FEFAE0"}}>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                     </TableRow>
-                    <TableRow>
+                    <TableRow sx={{backgroundColor: "#FEFAE0"}}>
                       <TableCell></TableCell>
                       <TableCell sx={{fontWeight: "bold"}}>Ingredients</TableCell>
                     </TableRow>
                     {measures.map((measure: string, index) => (
                       drink[measure] === null ? (
-                        <TableRow key={measure}></TableRow>
+                        <TableRow key={measure} sx={{backgroundColor: "#FEFAE0"}}></TableRow>
                       ): (
-                        <TableRow key={measure}>
+                        <TableRow key={measure} sx={{backgroundColor: "#FEFAE0"}}>
                           <TableCell></TableCell>
                           <TableCell>{drink[measure]} {drink[ingredients[index]]}</TableCell>
                         </TableRow>
                       )
                     ))}
-                    <TableRow>
+                    <TableRow sx={{backgroundColor: "#FEFAE0"}}>
                       <TableCell colSpan={3}>{drink.strInstructions}</TableCell>
                     </TableRow>
                   </TableBody>
