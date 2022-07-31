@@ -9,6 +9,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import SearchIcon from '@mui/icons-material/Search';
 
 type Cocktail = {
   [key: string]: string;
@@ -57,42 +60,51 @@ function App() {
   const [cocktailData, setCocktailData] = useState<null | undefined | any>(undefined);
 
   const COCKTAIL_BASE_URL = "https://www.thecocktaildb.com/api/json/v1/";
+
+  //Declare arrays of each measure and ingredient variable name so we can loop through them when generating the UI
   const measures = ["strMeasure1", "strMeasure2", "strMeasure3", "strMeasure4", "strMeasure5", "strMeasure6", "strMeasure7", "strMeasure8", "strMeasure9", "strMeasure10", "strMeasure11", "strMeasure12", "strMeasure13", "strMeasure14", "strMeasure15"];
   const ingredients = ["strIngredient1", "strIngredient2", "strIngredient3", "strIngredient4", "strIngredient5", "strIngredient6", "strIngredient7", "strIngredient8", "strIngredient9", "strIngredient10", "strIngredient11", "strIngredient12", "strIngredient13", "strIngredient14", "strIngredient15"]
+  
   return (
     <div>
-      <h1>Cocktail Recipe Search</h1>
+      <h1 style={{ textAlign: "center" }}>Cocktail Recipe Search</h1>
 
-      {/*user input for cocktail search*/}
-      <div>
-        <label>Cocktail Search</label><br/>
-        <input type="text" name="cocktail-name" onChange={e => setCocktailName(e.target.value)}/>
-        <button onClick={search}>Search</button>
-        <button onClick={random}>Random Cocktail</button>
-      </div>
+      {/**user input for cocktail search*/}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <TextField id="search-bar" value={cocktailName} onChange={(e: any) => {setCocktailName(e.target.value);}} label="Enter a cocktail name..." variant="outlined" size="small"/>
+        <Button onClick={() => {search();}}>
+          <SearchIcon style={{ fill: "blue" }} />
+          Search
+        </Button>
+        <Button onClick={() => {random();}}>
+          Random Cocktail
+        </Button>
+      </div><br />
       
-      {/**output display for cocktail data */}
+      {/**output display for cocktail data*/}
       <Box>
         {cocktailData === undefined ? (
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="cocktail-recipes">
+            <Table sx={{ minWidth: 650, maxWidth: "90%", marginLeft: "auto", marginRight: "auto" }} aria-label="cocktail-recipes">
               <TableHead>
-                <TableRow><TableCell></TableCell></TableRow>
+                <TableRow>
+                  <TableCell></TableCell>
+                </TableRow>
               </TableHead>
             </Table>
           </TableContainer>
         ) : (
           <TableContainer component={Paper}>
             {cocktailData === null || cocktailData.drinks === null ? (
-              <Table sx={{ minWidth: 650 }} aria-label="cocktail-recipes">
+              <Table sx={{ minWidth: 650, maxWidth: "90%", marginLeft: "auto", marginRight: "auto" }} aria-label="cocktail-recipes">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Cocktail not found</TableCell>
+                    <TableCell align="center" sx={{fontWeight: "bold"}}>Cocktail not found</TableCell>
                   </TableRow>
                 </TableHead>
               </Table>
             ) : (
-              <Table>
+              <Table sx={{ minWidth: 650, maxWidth: "90%", marginLeft: "auto", marginRight: "auto" }}>
                 {cocktailData.drinks.map((drink: Cocktail) => (
                   <TableBody key={drink.idDrink}>
                     <TableRow>
@@ -140,10 +152,13 @@ function App() {
   );
 
   function search() {
-    axios.get(COCKTAIL_BASE_URL + process.env.REACT_APP_COCKTAIL_API_KEY + "/search.php?s=" + cocktailName).then((res) => {
-      setCocktailData(res.data);
-    });
-    
+    if(cocktailName === "") {
+      setCocktailData(null);
+    } else {
+      axios.get(COCKTAIL_BASE_URL + process.env.REACT_APP_COCKTAIL_API_KEY + "/search.php?s=" + cocktailName).then((res) => {
+        setCocktailData(res.data);
+      });
+    }
   }
 
   function random() {
