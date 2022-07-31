@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 
 type Cocktail = {
   [key: string]: string;
+  idDrink: string;
   strDrink: string;
   strAlcoholic: string;
   strGlass: string;
@@ -51,7 +52,7 @@ type Cocktail = {
 }
 
 function App() {
-  //Declare state variable for name of cocktail
+  //Declare state variables for name and data of cocktail
   const [cocktailName, setCocktailName] = useState("");
   const [cocktailData, setCocktailData] = useState<null | undefined | any>(undefined);
 
@@ -71,70 +72,69 @@ function App() {
       </div>
       
       {/**output display for cocktail data */}
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="cocktail-recipes">
-          <TableHead>
-              {cocktailData === undefined ? (
+      <Box>
+        {cocktailData === undefined ? (
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="cocktail-recipes">
+              <TableHead>
                 <TableRow><TableCell></TableCell></TableRow>
-              ) : (
-                <TableRow>{cocktailData === null ? (
-                  <TableCell>Cocktail not found</TableCell>
-                ) : (
-                  <TableCell align="center" colSpan={2}>{cocktailData.drinks[0].strDrink} Recipe(s)</TableCell>
-                )}</TableRow>
-              )}
-          </TableHead>
-          {cocktailData === undefined || cocktailData === null ? (
-            <TableBody></TableBody>
-          ) : (
-            <TableBody>
-              {cocktailData.drinks.map((drink: Cocktail) => (
-                <Box key={drink.strDrink}>
-                  <Table>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell colSpan={3} align="center" sx={{fontWeight: "bold"}}>{drink.strDrink}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell rowSpan={19} sx={{width: 400}}><img src={drink.strDrinkThumb} style={{maxWidth: "100%", height: "auto"}}/></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell>Type: {drink.strAlcoholic}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell>Preferred glass: {drink.strGlass}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell sx={{fontWeight: "bold"}}>Ingredients</TableCell>
-                      </TableRow>
-                      {measures.map((measure: string, index) => (
-                        drink[measure] === null ? (
-                          <TableRow key={measure}></TableRow>
-                        ): (
-                          <TableRow key={measure}>
-                            <TableCell></TableCell>
-                            <TableCell>{drink[measure]} {drink[ingredients[index]]}</TableCell>
-                          </TableRow>
-                        )
-                      ))}
-                      <TableRow>
-                        <TableCell colSpan={3}>{drink.strInstructions}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table> 
-                </Box>
-              ))}
-            </TableBody>
-          )}
-          
-        </Table>
-      </TableContainer>
-
+              </TableHead>
+            </Table>
+          </TableContainer>
+        ) : (
+          <TableContainer component={Paper}>
+            {cocktailData === null || cocktailData.drinks === null ? (
+              <Table sx={{ minWidth: 650 }} aria-label="cocktail-recipes">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Cocktail not found</TableCell>
+                  </TableRow>
+                </TableHead>
+              </Table>
+            ) : (
+              <Table>
+                {cocktailData.drinks.map((drink: Cocktail) => (
+                  <TableBody key={drink.idDrink}>
+                    <TableRow>
+                      <TableCell colSpan={3} align="center" sx={{fontWeight: "bold"}}>{drink.strDrink}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell rowSpan={19} sx={{width: 400}}><img src={drink.strDrinkThumb} style={{maxWidth: "100%", height: "auto"}}/></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell><strong>Type: </strong>{drink.strAlcoholic}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell><strong>Preferred glass: </strong>{drink.strGlass}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell sx={{fontWeight: "bold"}}>Ingredients</TableCell>
+                    </TableRow>
+                    {measures.map((measure: string, index) => (
+                      drink[measure] === null ? (
+                        <TableRow key={measure}></TableRow>
+                      ): (
+                        <TableRow key={measure}>
+                          <TableCell></TableCell>
+                          <TableCell>{drink[measure]} {drink[ingredients[index]]}</TableCell>
+                        </TableRow>
+                      )
+                    ))}
+                    <TableRow>
+                      <TableCell colSpan={3}>{drink.strInstructions}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                  ))}
+              </Table>
+            )}
+          </TableContainer>
+        )}
+      </Box>
       
     </div>
   );
